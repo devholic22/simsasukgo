@@ -357,58 +357,185 @@ describe('BookmarkController - API 통합', () => {
 ```
 
 #### 3. Acceptance Tests (인수 테스트)
+
+**한글 변수명/메서드명으로 비즈니스 시나리오를 명확하게 표현**
+
 ```typescript
-// acceptance.spec.ts - 한글 함수명과 변수로 비즈니스 시나리오 검증
-describe('사용자 여행 계획 시나리오', () => {
-  it('사용자는 지도에서 장소를 선택하여 북마크를 추가하고 조회할 수 있다', async () => {
-    // Scenario: 일반 사용자가 여행을 계획한다
-    const 사용자 = await 사용자생성({이메일: 'user@example.com'});
+// bookmarks.controller.acceptance.spec.ts
+// Fixture 상속으로 중복되는 셋업 제거
+class BookmarkControllerAcceptanceTest extends BookmarkControllerAcceptanceFixture {
+  private static readonly 북마크_목록_URI = '/api/bookmarks?page=0&size=10';
+  private static readonly 북마크_단일_URI = '/api/bookmarks/';
 
-    // 첫 번째 장소 북마크
-    const 첫번째북마크 = await 북마크생성(사용자.id, {
+  private 사용자_토큰: string;
+  private 사용자: User;
+
+  @BeforeEach
+  setup() {
+    this.사용자 = 사용자_생성({ 이메일: 'user@example.com' });
+    this.사용자_토큰 = 토큰_생성(this.사용자);
+  }
+
+  @Test
+  async 북마크를_페이징_조회한다() {
+    // given: 여러 북마크가 존재
+    북마크_목록_생성(this.사용자.id, 15); // 15개 생성
+
+    // when: 페이징 조회
+    const 북마크_목록_조회_결과 = await 북마크_목록을_조회한다(
+      this.사용자_토큰,
+      BookmarkControllerAcceptanceTest.북마크_목록_URI
+    );
+
+    // then: 페이지네이션 검증
+    북마크_목록_조회_결과_검증(북마크_목록_조회_결과, {
+      전체_개수: 15,
+      현재_페이지_크기: 10,
+      현재_페이지_번호: 0,
+    });
+  }
+
+  @Test
+  async 북마크를_단일_조회한다() {
+    // given: 북마크 생성
+    const 북마크 = 북마크_생성(this.사용자.id, {
+      이름: '카페 아메리카노',
+      주소: '서울시 강남구',
+      위도: 37.4979,
+      경도: 127.0276,
+    });
+
+    // when: 단일 조회
+    const 북마크_조회_결과 = await 북마크를_조회한다(
+      this.사용자_토큰,
+      BookmarkControllerAcceptanceTest.북마크_단일_URI + 북마크.id
+    );
+
+    // then: 조회 결과 검증
+    북마크_조회_검증(북마크_조회_결과, {
+      id: 북마크.id,
+      이름: '카페 아메리카노',
+      주소: '서울시 강남구',
+    });
+  }
+
+  @Test
+  async 인증이_없으면_북마크_조회가_실패한다() {
+    // given: 인증 토큰 없음
+    const 인증_토큰_없음 = '';
+
+    // when: 인증 없이 조회 시도
+    const 북마크_조회_결과 = await 북마크_목록을_조회한다(
+      인증_토큰_없음,
+      BookmarkControllerAcceptanceTest.북마크_목록_URI
+    );
+
+    // then: 401 Unauthorized 반환
+    expect(북마크_조회_결과.상태_코드).toBe(401);
+    expect(북마크_조회_결과.오류_메시지).toContain('인증 필요');
+  }
+
+  @Test
+  async 중복된_북마크는_생성할_수_없다() {
+    // given: 첫 번째 북마크 생성
+    const 북마크_데이터 = {
       이름: '카페',
       주소: '강남구',
       위도: 37.4979,
       경도: 127.0276,
-    });
-    expect(첫번째북마크.이름).toBe('카페');
+    };
 
-    // 두 번째 장소 북마크
-    const 두번째북마크 = await 북마크생성(사용자.id, {
-      이름: '맛집',
-      주소: '강남구',
-      위도: 37.4980,
-      경도: 127.0277,
-    });
+    await 북마크_생성(this.사용자.id, 북마크_데이터);
 
-    // 북마크 목록 조회
-    const 모든북마크 = await 북마크목록조회(사용자.id);
-    expect(모든북마크.length).toBe(2);
-    expect(모든북마크[0].이름).toBe('카페');
-  });
+    // when: 같은 좌표로 재시도
+    const 중복_생성_결과 = await 북마크_생성(
+      this.사용자.id,
+      북마크_데이터
+    );
 
-  // Bad case: 같은 위치 중복 북마크 시도
-  it('같은 위치를 두 번 북마크하면 오류가 발생한다', async () => {
-    const 사용자 = await 사용자생성({이메일: 'user2@example.com'});
+    // then: 중복 오류 반환
+    expect(중복_생성_결과.상태_코드).toBe(409); // Conflict
+    expect(중복_생성_결과.오류_메시지).toContain('이미 북마크');
+  }
+}
+```
 
-    await 북마크생성(사용자.id, {
-      이름: '카페',
-      주소: '강남구',
-      위도: 37.4979,
-      경도: 127.0276,
-    });
+**Fixture 클래스 (공통 헬퍼 메서드)**
+```typescript
+// bookmarks.controller.acceptance.fixture.ts
+class BookmarkControllerAcceptanceFixture {
+  protected async 사용자_생성(옵션: UserOption): Promise<User> {
+    return await userFactory.생성(옵션);
+  }
 
-    // 같은 좌표로 재시도
-    await expect(
-      북마크생성(사용자.id, {
-        이름: '카페2',
-        주소: '강남구',
-        위도: 37.4979,
-        경도: 127.0276,
-      })
-    ).rejects.toThrow('이 위치는 이미 북마크되어 있습니다');
-  });
-});
+  protected 토큰_생성(사용자: User): string {
+    return jwtService.생성({ userId: 사용자.id });
+  }
+
+  protected 북마크_생성(
+    사용자id: string,
+    데이터: CreateBookmarkDto
+  ): Promise<Bookmark> {
+    return bookmarkService.생성(사용자id, 데이터);
+  }
+
+  protected 북마크_목록_생성(사용자id: string, 개수: number): void {
+    for (let i = 0; i < 개수; i++) {
+      bookmarkFactory.생성({
+        사용자id,
+        위도: 37.4979 + (i * 0.001),
+        경도: 127.0276 + (i * 0.001),
+      });
+    }
+  }
+
+  protected async 북마크_목록을_조회한다(
+    토큰: string,
+    uri: string
+  ): Promise<APIResponse> {
+    return request(this.app.getHttpServer())
+      .get(uri)
+      .set('Authorization', `Bearer ${토큰}`);
+  }
+
+  protected async 북마크를_조회한다(
+    토큰: string,
+    uri: string
+  ): Promise<APIResponse> {
+    return request(this.app.getHttpServer())
+      .get(uri)
+      .set('Authorization', `Bearer ${토큰}`);
+  }
+
+  protected async 북마크_생성(
+    토큰: string,
+    데이터: CreateBookmarkDto
+  ): Promise<APIResponse> {
+    return request(this.app.getHttpServer())
+      .post('/api/bookmarks')
+      .set('Authorization', `Bearer ${토큰}`)
+      .send(데이터);
+  }
+
+  protected 북마크_목록_조회_결과_검증(
+    결과: APIResponse,
+    기대값: PaginationExpectation
+  ): void {
+    expect(결과.상태_코드).toBe(200);
+    expect(결과.본문.content.length).toBe(기대값.현재_페이지_크기);
+    expect(결과.본문.totalElements).toBe(기대값.전체_개수);
+  }
+
+  protected 북마크_조회_검증(
+    결과: APIResponse,
+    기대값: BookmarkExpectation
+  ): void {
+    expect(결과.상태_코드).toBe(200);
+    expect(결과.본문.id).toBe(기대값.id);
+    expect(결과.본문.name).toBe(기대값.이름);
+    expect(결과.본문.address).toBe(기대값.주소);
+  }
+}
 ```
 
 ### 테스트 커버리지 목표
