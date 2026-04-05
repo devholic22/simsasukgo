@@ -81,11 +81,11 @@ Co-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>
 ```
 
 **중요:**
-- 모든 커밋에는 `Co-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>` 하단부에 추가
-  - Haiku를 사용할 때는 Claude Haiku
-  - Sonnet을 사용할 때는 Claude Sonnet
-  - Opus를 사용할 때는 Claude Opus
-- AI가 주도한 개발임을 명시
+- 모든 커밋에는 AI 모델 및 버전을 명시
+  - 예: `Claude Haiku 4.5 <noreply@anthropic.com>`
+  - 예: `Claude Opus 4.6 <noreply@anthropic.com>`
+  - 예: `Claude Sonnet 4.6 <noreply@anthropic.com>`
+- AI가 주도한 개발임을 기록 (모델 투명성)
 - Conventional Commits 스타일 준수 (나중에 자동 버전 관리에 사용 가능)
 
 ---
@@ -180,13 +180,16 @@ docs/
 
 이 프로젝트는 **AI와 함께 개발**됩니다.
 
-### 3.1 코드 소유권
-- 모든 커밋에 `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` 명시
-- AI와의 협업 과정을 문서로 기록 (선택사항)
+### 3.1 코드 소유권 및 투명성
+- 모든 커밋에 AI 모델 및 버전 명시 (예: `Claude Haiku 4.5`, `Claude Opus 4.6`)
+- `Co-Authored-By: <Model Name> <Version> <noreply@anthropic.com>` 형식
+- 당시 사용한 AI 모델을 정확히 기록 (추적 가능성 확보)
+- AI와의 협업 과정은 선택적으로 문서화
 
 ### 3.2 코드 리뷰
 - AI가 생성한 코드도 기존 규칙 준수 확인
 - Issue의 AC(Acceptance Criteria) 충족 여부 확인
+- 모델 업그레이드 시 재검증 (버전 변경되면 동작 확인)
 
 ---
 
