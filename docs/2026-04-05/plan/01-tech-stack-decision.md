@@ -73,23 +73,28 @@ simsasukgo 프로젝트의 기술 스택을 최종 결정합니다.
 
 ---
 
-### 3. PostgreSQL vs DynamoDB
+### 3. 데이터베이스 전략 (PostgreSQL + 필요시 보완)
 
-**PostgreSQL (RDB) 선택 시:**
+**주요 선택지 분석:**
+
+**PostgreSQL (관계형):**
 - ✅ **복잡한 쿼리**: 관계형 데이터에 우수
-- ✅ **ACID 보장**: 데이터 무결성 중요
+- ✅ **ACID 보장**: 트랜잭션 무결성 중요
 - ✅ **AI와 협업**: SQL은 LLM이 정확하게 생성 가능 (~98% 정확도)
-- ✅ **비용**: 개발 초기 저비용
-- 🛠 **선택 기술**: Neon PostgreSQL (Vercel Marketplace)
+- ✅ **비용**: 개발 초기 예측 가능한 비용
+- 🛠 **기술**: Neon PostgreSQL (Vercel Marketplace)
 
-**DynamoDB (NoSQL) 선택 시:**
-- ✅ **높은 확장성**: 대규모 트래픽 예상 시
-- ✅ **빠른 응답**: 단순 조회 최적화
-- ✅ **AWS 생태계**: Lambda, S3 등과의 연계
-- ⚠️ **AI와 협업**: DynamoDB 쿼리 문법이 복잡 (~70% 정확도)
-- ⚠️ **비용**: 사용량 기반 과금으로 초기 예측 어려움
+**DynamoDB/NoSQL (확장성 중심):**
+- ✅ **높은 확장성**: 대규모 트래픽 또는 실시간 스트리밍
+- ✅ **빠른 응답**: 단순 조회/캐싱 워크로드
+- ✅ **AWS 생태계**: Lambda, S3 등과의 네이티브 연계
+- ⚠️ **초기 복잡도**: 데이터 모델링 및 쿼리 설계 어려움
+- ⚠️ **AI와 협업**: 복잡한 문법 (~70% 정확도)
 
-**현재 결정:** PostgreSQL 먼저 검증, 필요시 DynamoDB로 마이그레이션
+**현재 전략:**
+- **기본**: PostgreSQL로 시작 (비즈니스 로직, 북마크 데이터)
+- **보완**: 필요시 Redis/DynamoDB 추가 (캐싱, 실시간 데이터)
+- **유연성**: 기능별로 적절한 DB 조합 가능 (다중 DB 아키텍처)
 
 ---
 
@@ -220,8 +225,8 @@ simsasukgo 프로젝트의 기술 스택을 최종 결정합니다.
 
 ## 📝 주의사항
 
-1. **PostgreSQL vs DynamoDB**: 초기에는 PostgreSQL로 검증 후, 필요시 마이그레이션
-2. **AI 협업**: 모든 커밋에 `Co-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>` 명시
+1. **데이터베이스 선택**: 단일 DB 고집하지 말고, 필요에 따라 PostgreSQL + 캐싱/NoSQL 조합 사용
+2. **AI 협업**: 모든 커밋에 AI 모델 및 버전 명시 (예: `Claude Haiku 4.5`, `Claude Opus 4.6`)
 3. **타입 안정성**: TypeScript strict mode 필수
 4. **테스트 커버리지**: 최소 80% 이상 목표
 
