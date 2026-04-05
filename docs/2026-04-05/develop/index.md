@@ -60,4 +60,4 @@ docs: Add issue templates (feature, fix, refactor) and documentation system
 ---
 
 **작성일:** 2026-04-05
-**담당자:** Claude (AI)
+**담당자:** Claude Haiku 4.5
