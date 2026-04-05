@@ -22,11 +22,26 @@
 
 **개요:**
 - Frontend: Next.js 16 + Vite + TypeScript
-- Backend: Vercel Functions + PostgreSQL + Prisma
+- Backend: Nest.js + PostgreSQL + TypeORM
 - Testing: Jest
 - AI 협업 관점에서의 기술 선택 근거
 
-**관련 Issue:** #1 (예정)
+**관련 Issue:** -
+**상태:** ✅ 완료
+
+---
+
+### 3. Google Maps 통합 및 기능 설계
+**파일:** `02-google-maps.md`
+
+**개요:**
+- Google Maps JavaScript API를 이용한 지도 시각화
+- 사용자 위치 북마크 관리 시스템
+- Google Places API를 이용한 실시간 비즈니스 시간 조회
+- Frontend/Backend 아키텍처 설계
+- 데이터베이스 스키마 설계
+
+**관련 Issue:** -
 **상태:** ✅ 완료
 
 ---
