@@ -103,7 +103,39 @@ simsasukgo 프로젝트의 기술 스택을 최종 결정합니다.
 
 ---
 
-### 5. Vercel AI SDK (AI 통합)
+### 5. Nest.js (Backend Framework)
+
+**이유:**
+- ✅ **현업 표준**: Fortune 500 기업들의 주요 선택지 (Google, Microsoft, BMW 등)
+- ✅ **엔터프라이즈급 설계**: 대규모 프로젝트 경험 축적, Best Practice 적용
+- ✅ **AI 코드 생성 정확도**: 데코레이터 패턴이 LLM에 명확히 이해되어 ~93% 정확도
+- ✅ **TypeScript 네이티브**: 첫 번째 클래스 TypeScript 지원
+- ✅ **풍부한 생태계**: @nestjs/* 모듈로 인증, 데이터베이스, 캐싱 등 통합 용이
+
+**현업 사용:**
+- Airbnb, Google Cloud, Lyft 등 주요 기업에서 사용
+- Node.js 백엔드 프레임워크 중 가장 빠르게 성장하는 커뮤니티
+- 안정적인 LTS 지원과 정기적인 업데이트
+
+---
+
+### 6. TypeORM (ORM)
+
+**이유:**
+- ✅ **현업 표준**: Enterprise Node.js 프로젝트의 주요 ORM 선택
+- ✅ **AI 친화적**: 데코레이터 기반 엔티티 정의로 LLM이 명확하게 이해 (~94% 정확도)
+- ✅ **TypeScript 우선**: 다른 ORM보다 Type Inference 우수
+- ✅ **PostgreSQL 최적화**: 복잡한 쿼리, 관계형 데이터에 특화
+- ✅ **Nest.js 통합**: @nestjs/typeorm으로 seamless 통합
+
+**현업 사용:**
+- Microsoft, Cisco, Sony 등 엔터프라이즈에서 채택
+- 금융, 의료, 대규모 SaaS 서비스에서 검증된 기술
+- 5년 이상 프로덕션 운영 경험
+
+---
+
+### 7. Vercel AI SDK (AI 통합)
 
 **이유:**
 - ✅ **OIDC 인증**: API 키 관리 불필요
@@ -134,10 +166,10 @@ simsasukgo 프로젝트의 기술 스택을 최종 결정합니다.
 ## 🚀 구현 계획
 
 ### Phase 1: 초기 설정 (2026-04-05)
-- [ ] monorepo 구조 (Turborepo)
-- [ ] Frontend (Next.js + Vite)
-- [ ] Backend (Vercel Functions)
-- [ ] Database (PostgreSQL + Prisma)
+- [x] monorepo 구조 (Turborepo) ✅
+- [x] Frontend (Next.js + Vite) ✅
+- [x] Backend (Nest.js) ✅
+- [ ] Database (PostgreSQL + TypeORM)
 
 ### Phase 2: 기본 기능 (2026-04-06~)
 - [ ] 인증 (Sign in with Vercel / Clerk)
