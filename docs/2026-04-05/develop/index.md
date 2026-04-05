@@ -7,6 +7,8 @@
 | 1 | GitHub 저장소 초기화 | - | - | ✅ |
 | 2 | CONTRIBUTING.md 작성 | - | chore/setup-1 | ✅ |
 | 3 | Issue 템플릿 생성 | - | chore/setup-2 | ✅ |
+| 4 | 기술 스택 최종 결정 | - | - | ✅ |
+| 5 | Monorepo 기본 구조 설정 | - | develop | ✅ |
 
 ## 🔧 구현 내용
 
@@ -50,12 +52,64 @@ docs: Add issue templates (feature, fix, refactor) and documentation system
 
 ---
 
+### 4. 기술 스택 최종 의사결정
+
+**문서:** `docs/2026-04-05/plan/01-tech-stack-decision.md`
+
+**결정 사항:**
+- **Frontend:** Next.js 16 + Vite + TypeScript
+- **Backend:** Vercel Functions + PostgreSQL + Prisma
+- **Testing:** Jest
+- **패키지 매니저:** npm
+- **모니터링:** Vercel Analytics
+
+**핵심 근거:**
+- TypeScript: AI 협업 효율성 (LLM 생성 정확도 ~95%)
+- Vite: 개발 속도 및 AI 피드백 루프 최적화
+- PostgreSQL: SQL 생성 정확도 (~98%)
+- Jest: LLM 테스트 생성 정확도 (~92%)
+
+---
+
+### 5. Monorepo 기본 구조 설정
+
+**생성 파일:**
+```
+simsasukgo/
+├── package.json (workspaces 설정)
+├── turbo.json (Turborepo 설정)
+├── tsconfig.base.json
+├── vercel.json
+├── apps/
+│   ├── web/ (Next.js frontend)
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── api/ (Vercel Functions backend)
+│       ├── package.json
+│       └── tsconfig.json
+└── packages/
+    ├── shared/ (공유 타입/유틸)
+    │   ├── package.json
+    │   └── tsconfig.json
+    └── database/ (Prisma)
+        ├── package.json
+        └── tsconfig.json
+```
+
+**주요 설정:**
+- npm workspaces 기반 monorepo
+- Turborepo 작업 관리
+- 통합 TypeScript 설정
+- Vercel 다중 프로젝트 배포
+
+---
+
 ## 🚀 다음 단계
 
-1. develop 브랜치 생성
-2. 첫 번째 기능 Issue 생성
-3. 기술 스택 최종 결정
-4. 초기 코드 설정
+1. npm install (의존성 설치)
+2. Prisma 스키마 설계
+3. Google Maps 기획 문서 작성
+4. 초기 API 엔드포인트 구현
 
 ---
 

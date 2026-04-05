@@ -1,0 +1,19 @@
+{
+  "name": "@simsasukgo/database",
+  "version": "0.0.1",
+  "description": "Prisma database configuration",
+  "scripts": {
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "generate": "prisma generate",
+    "studio": "prisma studio",
+    "seed": "node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0",
+    "typescript": "^5.0.0"
+  }
+}

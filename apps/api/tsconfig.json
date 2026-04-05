@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": ".vercel/output/functions",
+    "rootDir": ".",
+    "lib": ["ES2020"]
+  },
+  "include": ["api/**/*.ts"],
+  "exclude": ["node_modules", ".vercel"]
+}

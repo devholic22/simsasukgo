@@ -5,7 +5,7 @@
 ## 📋 기획 문서 목록
 
 ### 1. 프로젝트 초기화 기획
-**파일:** `01-project-setup.md`
+**파일:** `01-project-setup.md` (미생성 - 이미 완료)
 
 **개요:**
 - simsasukgo 프로젝트의 저장소 초기화
@@ -13,6 +13,20 @@
 - 문서화 시스템 구축
 
 **관련 Issue:** -
+**상태:** ✅ 완료
+
+---
+
+### 2. 기술 스택 최종 의사결정
+**파일:** `01-tech-stack-decision.md`
+
+**개요:**
+- Frontend: Next.js 16 + Vite + TypeScript
+- Backend: Vercel Functions + PostgreSQL + Prisma
+- Testing: Jest
+- AI 협업 관점에서의 기술 선택 근거
+
+**관련 Issue:** #1 (예정)
 **상태:** ✅ 완료
 
 ---

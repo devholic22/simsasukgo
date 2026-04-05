@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "projects": [
+    {
+      "name": "web",
+      "path": "apps/web"
+    },
+    {
+      "name": "api",
+      "path": "apps/api"
+    }
+  ],
+  "buildCommand": "npm run build --workspace=@simsasukgo/web --workspace=@simsasukgo/api",
+  "devCommand": "npm run dev",
+  "framework": "nextjs",
+  "env": [
+    {
+      "key": "DATABASE_URL",
+      "description": "PostgreSQL database URL",
+      "value": "",
+      "type": "secret"
+    }
+  ],
+  "crons": [
+    {
+      "path": "api/cron/health-check",
+      "schedule": "0 */4 * * *"
+    }
+  ]
+}
