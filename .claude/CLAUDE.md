@@ -128,6 +128,7 @@ npm run test          # 모든 테스트 성공 필수
 - AC에 명시되지 않은 기능 추가 금지
 - 타입 안정성 필수 (strict mode)
 - 테스트 작성 의무
+- 코드에 이모티콘 사용 금지 (문서 제외)
 
 ### 5️⃣ AC 완료 검증 (커밋 직전)
 
@@ -282,11 +283,9 @@ simsasukgo/
 ### 1️⃣ Unit Tests (개별 함수/메서드)
 ```typescript
 // bookmarks.service.spec.ts
-// ✅ 영어 변수명 사용
 describe('BookmarkService', () => {
-  describe('createBookmark', () => {
-    it('should create bookmark with valid data', async () => {
-      // given
+  describe('북마크 생성', () => {
+    it('유효한 데이터로 북마크를 생성한다', async () => {
       const userId = 'user-123';
       const bookmarkData = {
         name: 'Cafe Americano',
@@ -295,17 +294,14 @@ describe('BookmarkService', () => {
         longitude: 127.0276,
       };
 
-      // when
       const result = await bookmarkService.createBookmark(userId, bookmarkData);
 
-      // then
       expect(result).toBeDefined();
       expect(result.name).toBe('Cafe Americano');
     });
 
-    // Bad case
-    it('should throw error when required field is missing', async () => {
-      const invalidData = { name: 'Cafe' }; // address missing
+    it('필수 필드가 누락되면 오류를 발생한다', async () => {
+      const invalidData = { name: 'Cafe' };
 
       await expect(
         bookmarkService.createBookmark('user-123', invalidData)
@@ -313,7 +309,7 @@ describe('BookmarkService', () => {
     });
   });
 
-  it('should calculate distance correctly', () => {
+  it('두 좌표 사이의 거리를 정확하게 계산한다', () => {
     const distance = bookmarkService.calculateDistance(
       { latitude: 37.4979, longitude: 127.0276 },
       { latitude: 37.4980, longitude: 127.0277 }
@@ -326,9 +322,8 @@ describe('BookmarkService', () => {
 ### 2️⃣ Integration Tests (API 엔드포인트)
 ```typescript
 // bookmarks.controller.spec.ts
-// ✅ 영어 변수명 사용
 describe('BookmarkController', () => {
-  it('should create bookmark via POST /api/bookmarks', async () => {
+  it('POST /api/bookmarks로 북마크를 생성한다', async () => {
     const response = await request(app.getHttpServer())
       .post('/api/bookmarks')
       .set('Authorization', 'Bearer token123')
@@ -343,8 +338,7 @@ describe('BookmarkController', () => {
     expect(response.body.id).toBeDefined();
   });
 
-  // Bad case: missing authentication
-  it('should return 401 when token is missing', async () => {
+  it('인증 토큰이 없으면 401을 반환한다', async () => {
     const response = await request(app.getHttpServer())
       .post('/api/bookmarks')
       .send({ name: 'Restaurant' });
@@ -352,11 +346,11 @@ describe('BookmarkController', () => {
     expect(response.status).toBe(401);
   });
 
-  it('should return 400 when required field is missing', async () => {
+  it('필수 필드가 누락되면 400을 반환한다', async () => {
     const response = await request(app.getHttpServer())
       .post('/api/bookmarks')
       .set('Authorization', 'Bearer token123')
-      .send({ name: 'Restaurant' }); // address missing
+      .send({ name: 'Restaurant' });
 
     expect(response.status).toBe(400);
   });
@@ -369,7 +363,6 @@ describe('BookmarkController', () => {
 
 ```typescript
 // bookmarks.controller.acceptance.spec.ts
-// ✅ 한글 변수명/메서드명 사용 (비즈니스 시나리오 명확화)
 class BookmarkControllerAcceptanceTest extends BookmarkControllerAcceptanceFixture {
   private static readonly 북마크_목록_URI = '/api/bookmarks?page=0&size=10';
   private static readonly 북마크_단일_URI = '/api/bookmarks/';
