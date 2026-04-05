@@ -671,32 +671,9 @@ docs/yyyy-mm-dd/
 
 ---
 
-## 🎯 다음 우선순위
-
-1. **TypeORM 스키마**
-   - [ ] Bookmark 엔티티 + migration
-   - [ ] User 엔티티 + migration
-   - [ ] Unit/Integration 테스트
-
-2. **Nest.js API**
-   - [ ] bookmarks CRUD 엔드포인트
-   - [ ] API 통합 테스트
-   - [ ] API 명세 문서
-
-3. **Next.js Frontend**
-   - [ ] App Router 레이아웃
-   - [ ] 기본 페이지 구조
-   - [ ] 지도 컴포넌트 (향후)
-
----
-
 ## 📚 참고 문서
 
 - `.github/CONTRIBUTING.md` - 상세 개발 규칙
-- `docs/2026-04-05/plan/01-tech-stack-decision.md` - 기술 선택 근거
-- `docs/retro/2026-04-05.md` - 프로젝트 진행 상황
-
----
-
-**유지보수자:** Claude Haiku 4.5
-**마지막 업데이트:** 2026-04-05
+- `docs/yyyy-mm-dd/plan/` - 기획 문서 (기술 선택, 기능 설계)
+- `docs/yyyy-mm-dd/develop/` - 개발 기록 (PR, 구현 내용)
+- `docs/retro/` - 일일 회고 (진행 상황, 다음 우선순위)
