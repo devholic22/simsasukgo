@@ -2,7 +2,6 @@
 
 **프로젝트:** Google Maps 기반 여행 계획 서비스
 **Repository:** https://github.com/devholic22/simsasukgo
-**작업 디렉토리:** /Users/devholic/Desktop/simsasukgo
 
 ---
 
