@@ -31,21 +31,6 @@
 
 ---
 
-### 3. Google Maps 통합 및 기능 설계
-**파일:** `02-google-maps.md`
-
-**개요:**
-- Google Maps JavaScript API를 이용한 지도 시각화
-- 사용자 위치 북마크 관리 시스템
-- Google Places API를 이용한 실시간 비즈니스 시간 조회
-- Frontend/Backend 아키텍처 설계
-- 데이터베이스 스키마 설계
-
-**관련 Issue:** -
-**상태:** ✅ 완료
-
----
-
 ## 🔗 기획 문서 작성 가이드
 
 각 기획 문서는 다음 형식으로 작성됩니다:
