@@ -1,19 +1,26 @@
 {
   "name": "@simsasukgo/database",
   "version": "0.0.1",
-  "description": "Prisma database configuration",
+  "description": "TypeORM database configuration and entities",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "migrate:dev": "prisma migrate dev",
-    "migrate:deploy": "prisma migrate deploy",
-    "generate": "prisma generate",
-    "studio": "prisma studio",
-    "seed": "node prisma/seed.ts"
+    "migration:create": "typeorm migration:create",
+    "migration:run": "typeorm migration:run",
+    "migration:revert": "typeorm migration:revert",
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0"
+    "typeorm": "^0.3.17",
+    "pg": "^8.11.0",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "prisma": "^5.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "ts-loader": "^9.5.0"
   }
 }

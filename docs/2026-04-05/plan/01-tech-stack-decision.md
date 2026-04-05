@@ -22,23 +22,22 @@ simsasukgo 프로젝트의 기술 스택을 최종 결정합니다.
 - **테스팅:** Jest + React Testing Library
 
 ### Backend
-- **런타임:** Vercel Functions (Node.js 24 LTS)
+- **프레임워크:** Nest.js
 - **언어:** TypeScript
 - **데이터베이스:**
-  - **Option A (RDB):** PostgreSQL (Neon via Vercel Marketplace)
-  - **Option B (NoSQL):** AWS DynamoDB
-- **ORM/Query Builder:**
-  - PostgreSQL: Prisma
-  - DynamoDB: AWS SDK v3
+  - **기본:** PostgreSQL
+  - **대안:** AWS DynamoDB (필요시)
+- **ORM:** TypeORM
 - **테스팅:** Jest
 - **API 스타일:** REST (초기), GraphQL 검토 예정
+- **배포:** Railway, Heroku, AWS (추후 결정)
 
 ### 공통 도구
 - **언어:** TypeScript (모든 프로젝트)
 - **테스팅 프레임워크:** Jest
-- **패키지 매니저:** npm / pnpm
-- **모니터링:** Vercel Analytics + Speed Insights
-- **AI 협업:** Vercel AI SDK (claude-opus-4-6 또는 claude-sonnet-4-6)
+- **패키지 매니저:** npm workspaces
+- **모니터링:** Vercel Analytics (Frontend) + Winston/Pino (Backend)
+- **AI 협업:** Vercel AI SDK (Claude)
 
 ---
 
@@ -121,13 +120,14 @@ simsasukgo 프로젝트의 기술 스택을 최종 결정합니다.
 | Language | TypeScript | 5.0+ | AI 협업 효율, 현업 표준 |
 | Frontend | Next.js | 16+ | Vercel 최적화, Server Components |
 | Frontend Build | Vite | 5.0+ | 개발 속도, AI 피드백 루프 |
-| Frontend Testing | Jest | 29+ | LLM 생성 정확도 |
-| Backend | Vercel Functions | - | Serverless, 자동 스케일 |
+| Backend Framework | Nest.js | 10+ | 엔터프라이즈급, AI 코드 생성 정확도 |
+| Backend Runtime | Node.js | 24 LTS | TypeScript 지원, 성숙한 생태계 |
 | Database | PostgreSQL | 15+ | 복잡 쿼리, AI SQL 정확도 |
-| ORM | Prisma | 5.0+ | TypeScript 통합, 자동 마이그레이션 |
-| Testing | Jest | 29+ | 통일된 테스팅 |
-| Deployment | Vercel | - | 원클릭 배포, 자동 최적화 |
-| Monitoring | Vercel Analytics | - | RUM 데이터, 핵심 지표 |
+| ORM | TypeORM | 0.3+ | TypeScript 통합, 데코레이터 패턴, AI 코드 생성 용이 |
+| Testing | Jest | 29+ | 통일된 테스팅, LLM 생성 정확도 ~92% |
+| Package Manager | npm | 10+ | 워크스페이스 지원, 현업 표준 |
+| Frontend Deployment | Vercel | - | 원클릭 배포, 자동 최적화 |
+| Frontend Monitoring | Vercel Analytics | - | RUM 데이터, Core Web Vitals |
 
 ---
 

@@ -1,25 +1,46 @@
 {
   "name": "@simsasukgo/api",
   "version": "0.0.1",
-  "description": "Vercel Functions backend",
+  "description": "Nest.js backend with TypeORM",
+  "main": "dist/main.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "tsc",
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "type-check": "tsc --noEmit"
+    "test:cov": "jest --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint \"{src,test}/**/*.ts\""
   },
   "dependencies": {
+    "@nestjs/common": "^10.3.0",
+    "@nestjs/core": "^10.3.0",
+    "@nestjs/typeorm": "^10.0.0",
     "@simsasukgo/shared": "*",
     "@simsasukgo/database": "*",
-    "@prisma/client": "^5.0.0",
+    "typeorm": "^0.3.17",
+    "pg": "^8.11.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
     "axios": "^1.6.0",
-    "zod": "^3.22.0"
+    "zod": "^3.22.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@nestjs/cli": "^10.3.0",
+    "@nestjs/schematics": "^10.0.0",
+    "@nestjs/testing": "^10.3.0",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.0",
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
     "jest": "^29.0.0",
-    "@types/jest": "^29.0.0"
+    "ts-jest": "^29.1.0",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.0.0"
   }
 }

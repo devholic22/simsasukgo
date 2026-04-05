@@ -58,16 +58,18 @@ docs: Add issue templates (feature, fix, refactor) and documentation system
 
 **결정 사항:**
 - **Frontend:** Next.js 16 + Vite + TypeScript
-- **Backend:** Vercel Functions + PostgreSQL + Prisma
+- **Backend:** Nest.js + PostgreSQL + TypeORM
 - **Testing:** Jest
-- **패키지 매니저:** npm
-- **모니터링:** Vercel Analytics
+- **패키지 매니저:** npm workspaces
+- **모니터링:** Vercel Analytics (Frontend) + Winston (Backend)
 
 **핵심 근거:**
 - TypeScript: AI 협업 효율성 (LLM 생성 정확도 ~95%)
 - Vite: 개발 속도 및 AI 피드백 루프 최적화
-- PostgreSQL: SQL 생성 정확도 (~98%)
-- Jest: LLM 테스트 생성 정확도 (~92%)
+- Nest.js: 엔터프라이즈급 프레임워크, AI 코드 생성 정확도 높음
+- TypeORM: 데코레이터 패턴, TypeScript 네이티브, AI 생성 용이
+- PostgreSQL: 복잡한 쿼리 지원, AI SQL 생성 정확도 (~98%)
+- Jest: 통일된 테스팅, LLM 테스트 생성 정확도 (~92%)
 
 ---
 
@@ -98,9 +100,10 @@ simsasukgo/
 
 **주요 설정:**
 - npm workspaces 기반 monorepo
-- Turborepo 작업 관리
-- 통합 TypeScript 설정
-- Vercel 다중 프로젝트 배포
+- Turborepo 작업 관리 (빌드, 테스트, 린트)
+- 통합 TypeScript 설정 (tsconfig.base.json)
+- Frontend: Vercel 배포
+- Backend: Railway/Heroku/AWS (추후 선택)
 
 ---
 
