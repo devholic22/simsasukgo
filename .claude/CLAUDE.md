@@ -271,97 +271,105 @@ simsasukgo/
 
 ## 🧪 테스팅 규칙
 
-### 테스트 작성 패턴 (Given-When-Then)
+### 테스팅 레이어별 네이밍 규칙
 
+| 레이어 | 파일명 | 변수명 | 목적 |
+|-------|--------|--------|------|
+| **Unit** | `*.service.spec.ts` | 영어 | 개별 함수 검증 |
+| **Integration** | `*.controller.spec.ts` | 영어 | API 기술 검증 |
+| **Acceptance** | `*.acceptance.spec.ts` | 한글 | 비즈니스 시나리오 |
+
+### 1️⃣ Unit Tests (개별 함수/메서드)
 ```typescript
+// bookmarks.service.spec.ts
+// ✅ 영어 변수명 사용
 describe('BookmarkService', () => {
-  // ✅ GOOD: Given-When-Then 패턴
   describe('createBookmark', () => {
-    it('사용자가 유효한 위치 데이터를 전송할 때 북마크가 생성된다', async () => {
-      // Given: 사전 조건
-      const 사용자ID = 'user-123';
-      const 북마크데이터 = {
-        이름: '카페 아메리카노',
-        주소: '서울시 강남구',
-        위도: 37.4979,
-        경도: 127.0276,
+    it('should create bookmark with valid data', async () => {
+      // given
+      const userId = 'user-123';
+      const bookmarkData = {
+        name: 'Cafe Americano',
+        address: 'Gangnam-gu, Seoul',
+        latitude: 37.4979,
+        longitude: 127.0276,
       };
 
-      // When: 액션
-      const 결과 = await bookmarkService.createBookmark(사용자ID, 북마크데이터);
+      // when
+      const result = await bookmarkService.createBookmark(userId, bookmarkData);
 
-      // Then: 검증
-      expect(결과).toBeDefined();
-      expect(결과.이름).toBe('카페 아메리카노');
-      expect(결과.사용자ID).toBe(사용자ID);
+      // then
+      expect(result).toBeDefined();
+      expect(result.name).toBe('Cafe Americano');
     });
 
-    // ❌ BAD CASE: 유효하지 않은 데이터
-    it('필수 필드가 누락되면 오류를 발생한다', async () => {
-      const 불완전한데이터 = {
-        이름: '카페',
-        // 주소 누락 (필수)
-      };
+    // Bad case
+    it('should throw error when required field is missing', async () => {
+      const invalidData = { name: 'Cafe' }; // address missing
 
       await expect(
-        bookmarkService.createBookmark('user-123', 불완전한데이터)
-      ).rejects.toThrow('주소는 필수입니다');
+        bookmarkService.createBookmark('user-123', invalidData)
+      ).rejects.toThrow('Address is required');
     });
   });
-});
-```
 
-### 각 레이어별 테스트
-
-#### 1. Unit Tests (개별 함수/메서드)
-```typescript
-// services/bookmarks.service.spec.ts
-describe('BookmarkService - 비즈니스 로직', () => {
-  it('북마크 거리 계산이 정확하다', () => {
-    const 거리 = bookmarkService.거리계산({위도: 37.4979, 경도: 127.0276},
-                                   {위도: 37.4980, 경도: 127.0277});
-    expect(거리).toBeLessThan(150); // 150m 이내
+  it('should calculate distance correctly', () => {
+    const distance = bookmarkService.calculateDistance(
+      { latitude: 37.4979, longitude: 127.0276 },
+      { latitude: 37.4980, longitude: 127.0277 }
+    );
+    expect(distance).toBeLessThan(150);
   });
 });
 ```
 
-#### 2. Integration Tests (API 엔드포인트)
+### 2️⃣ Integration Tests (API 엔드포인트)
 ```typescript
-// controllers/bookmarks.controller.spec.ts
-describe('BookmarkController - API 통합', () => {
-  it('POST /api/bookmarks로 북마크를 생성한다', async () => {
-    const 응답 = await request(app.getHttpServer())
+// bookmarks.controller.spec.ts
+// ✅ 영어 변수명 사용
+describe('BookmarkController', () => {
+  it('should create bookmark via POST /api/bookmarks', async () => {
+    const response = await request(app.getHttpServer())
       .post('/api/bookmarks')
       .set('Authorization', 'Bearer token123')
       .send({
-        이름: '맛집',
-        주소: '서울시 강남구',
-        위도: 37.4979,
-        경도: 127.0276,
+        name: 'Restaurant ABC',
+        address: 'Gangnam-gu, Seoul',
+        latitude: 37.4979,
+        longitude: 127.0276,
       });
 
-    expect(응답.status).toBe(201);
-    expect(응답.body.id).toBeDefined();
+    expect(response.status).toBe(201);
+    expect(response.body.id).toBeDefined();
   });
 
-  // Bad case: 인증 없이 요청
-  it('인증 토큰이 없으면 401 Unauthorized를 반환한다', async () => {
-    const 응답 = await request(app.getHttpServer())
+  // Bad case: missing authentication
+  it('should return 401 when token is missing', async () => {
+    const response = await request(app.getHttpServer())
       .post('/api/bookmarks')
-      .send({이름: '맛집', 주소: '서울'});
+      .send({ name: 'Restaurant' });
 
-    expect(응답.status).toBe(401);
+    expect(response.status).toBe(401);
+  });
+
+  it('should return 400 when required field is missing', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/api/bookmarks')
+      .set('Authorization', 'Bearer token123')
+      .send({ name: 'Restaurant' }); // address missing
+
+    expect(response.status).toBe(400);
   });
 });
 ```
 
-#### 3. Acceptance Tests (인수 테스트)
+### 3️⃣ Acceptance Tests (인수 테스트)
 
 **한글 변수명/메서드명으로 비즈니스 시나리오를 명확하게 표현**
 
 ```typescript
 // bookmarks.controller.acceptance.spec.ts
-// Fixture 상속으로 중복되는 셋업 제거
+// ✅ 한글 변수명/메서드명 사용 (비즈니스 시나리오 명확화)
 class BookmarkControllerAcceptanceTest extends BookmarkControllerAcceptanceFixture {
   private static readonly 북마크_목록_URI = '/api/bookmarks?page=0&size=10';
   private static readonly 북마크_단일_URI = '/api/bookmarks/';
